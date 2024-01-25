@@ -59,18 +59,17 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
         return self.email
 
 
-# class Question(models.Model):
-#     """Database model for questions in the system"""
+class Question(models.Model):
+    """Database model for questions in the system"""
 
-#     title = models.CharField(max_length=255)
-#     body = models.TextField()
-#     user = models.ForeignKey(
-#         UserProfile, on_delete=models.CASCADE, related_name="questions"
-#     )
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
-#     tags = models.ManyToManyField("Tag", related_name="questions")
+    title = models.CharField(max_length=255)
+    text = models.TextField()
+    user = models.ForeignKey(
+        UserProfile, on_delete=models.CASCADE, related_name="questions"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
-#     def __str__(self):
-#         """Return string representation of question"""
-#         return self.title
+    def __str__(self):
+        """Return string representation of question"""
+        return self.title
