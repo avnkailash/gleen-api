@@ -18,7 +18,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
         """Create and return a new user"""
 
         user = models.UserProfile(
-            email=validated_data["email"], name=validated_data["name"]
+            email=validated_data["email"],
+            name=validated_data["name"],
+            avatar=validated_data.get("avatar", None),
         )
 
         user.set_password(validated_data["password"])
