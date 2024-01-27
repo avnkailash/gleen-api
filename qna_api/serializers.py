@@ -8,12 +8,13 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.UserProfile
-        fields = ("id", "email", "name", "password")
+        fields = ("id", "email", "name", "password", "avatar")
         extra_kwargs = {
-            "password": {"write_only": True, "style": {"input_type": "password"}}
+            "password": {"write_only": True, "style": {"input_type": "password"}},
+            "avatar": {"required": False},
         }
 
-    def create(self, validated_data):
+    def create(self, validated_data: dict):
         """Create and return a new user"""
 
         user = models.UserProfile(
@@ -25,11 +26,15 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
         return user
 
-    def update(self, instance, validated_data):
+    def update(self, instance: models.UserProfile, validated_data: dict):
         """Handle updating user account"""
         if "password" in validated_data:
             password = validated_data.pop("password")
             instance.set_password(password)
+
+        avatar = validated_data.pop("avatar", None)
+        if avatar:
+            instance.avatar = avatar
 
         return super().update(instance, validated_data)
 

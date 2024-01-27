@@ -4,6 +4,8 @@ from rest_framework import status, viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
 
 from qna_api import serializers
 from qna_api import models
@@ -17,6 +19,12 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = models.UserProfile.objects.all()
     authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.UpdateOwnProfile,)
+
+    @action(detail=False, methods=["get"], permission_classes=[IsAuthenticated])
+    def me(self, request):
+        """Return the profile of the logged in user"""
+        serializer = self.get_serializer(request.user)
+        return Response(serializer.data)
 
 
 class UserLoginApiView(ObtainAuthToken):
